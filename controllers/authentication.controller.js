@@ -3,13 +3,16 @@ const { validationResult } = require("express-validator");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const nodeMailer = require("nodemailer");
+require("dotenv").config();
 
 function sendEmailConfirmation(body) {
   var emailTransporter = nodeMailer.createTransport({
-    service: "gmail",
+    host: "smtp.gmail.com",
+    port: 587,
+    service: "Gmail",
     auth: {
-      user: "gwenpenadev@gmail.com",
-      pass: "iloveYOUJESUS143",
+      user: process.env.emailUser,
+      pass: process.env.emailPassword,
     },
   });
 
@@ -19,7 +22,7 @@ function sendEmailConfirmation(body) {
       to: body.email,
       subject: `Welcome to Plan It: Personal To-Do List!`,
       html: `<h3 style="color:#66B386;">Hi ${body.first_name} ${body.last_name}!</h3>
-              <p >You are now registed to Plan It: Personal To-Do List.</p>
+              <p >You are now registered to Plan It: Personal To-Do List.</p>
               <br>
               <p>Thank you so much for signing up! We hope that you will tackle all your tasks. We are with you on this journey towards productivity.</p>
               <br>
